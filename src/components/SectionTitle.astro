@@ -1,0 +1,9 @@
+---
+const { eyebrow, title, description, align = 'left' } = Astro.props;
+---
+
+<div class:list={['mb-10 md:mb-14', align === 'center' && 'mx-auto max-w-3xl text-center']}>
+  {eyebrow && <p class="mb-4 text-sm font-extrabold uppercase text-primary">{eyebrow}</p>}
+  <h2 class="site-display-title max-w-4xl whitespace-pre-line">{title}</h2>
+  {description && <p class="mt-6 max-w-2xl text-base leading-7 text-mute md:text-[1.05rem]">{description}</p>}
+</div>

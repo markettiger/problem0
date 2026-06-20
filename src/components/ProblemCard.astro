@@ -1,0 +1,8 @@
+---
+const { title, index } = Astro.props;
+---
+
+<article class="rounded-[8px] border border-ink bg-paper p-6 transition hover:-translate-y-1 hover:bg-white hover:shadow-crisp">
+  <p class="text-sm font-extrabold text-primary">문제 {String(index).padStart(2, '0')}</p>
+  <h3 class="mt-8 text-[clamp(1.55rem,3.2vw,2.8rem)] font-extrabold leading-[1.1]">{title}</h3>
+</article>

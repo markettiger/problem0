@@ -1,0 +1,11 @@
+---
+const { question, answer } = Astro.props;
+---
+
+<details class="faq-item border-t border-ink py-6 last:border-b">
+  <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-lg font-extrabold md:text-[1.35rem]">
+    {question}
+    <span class="faq-icon inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink text-base">+</span>
+  </summary>
+  <p class="mt-5 max-w-3xl text-base leading-7 text-mute md:text-[1.05rem]">{answer}</p>
+</details>

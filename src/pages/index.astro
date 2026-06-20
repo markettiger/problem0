@@ -1,0 +1,311 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CTAButton from '../components/CTAButton.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import ReferenceCard from '../components/ReferenceCard.astro';
+import FitCard from '../components/FitCard.astro';
+import FAQItem from '../components/FAQItem.astro';
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, absoluteUrl } from '../utils/seo';
+
+const references = [
+  {
+    name: '세일러즈',
+    result: ['구매전환', '182% 상승'],
+    title: '워크템 브랜드, 세일러즈',
+    href: '/blog/stationerybrand',
+    image: 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdna%2FbkGs0P%2FdJMb8Vs0DVP%2FAAAAAAAAAAAAAAAAAAAAAKNwd-B3To4eZAXTugRqLabcxSXBvvrURPhTINXl6H65%2Fimg.png%3Fcredential%3DyqXZFxpELC7KVnFOS48ylbz2pIh7yKj8%26expires%3D1782831599%26allow_ip%3D%26allow_referer%3D%26signature%3DiPiyWOkGpH5QQI%252BC%252F5JK%252F5twqnQ%253D'
+  },
+  {
+    name: '피카',
+    result: ['설치당 비용', '22% 하락'],
+    title: '100% 무료 이상형 검색 서비스, 피카',
+    href: '/blog/datingapp',
+    image: 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdna%2FxwxA8%2FdJMcahdf8vi%2FAAAAAAAAAAAAAAAAAAAAAD6VixrAcwnOWbwEMST5g7QcwK80ao2VLVn1x9HIagJy%2Fimg.png%3Fcredential%3DyqXZFxpELC7KVnFOS48ylbz2pIh7yKj8%26expires%3D1782831599%26allow_ip%3D%26allow_referer%3D%26signature%3DsNwK93Ifjg5OXEVLqWWT5Qa69%252F8%253D'
+  },
+  {
+    name: '디오',
+    result: ['인터뷰 콘텐츠', '10개 이상 발행'],
+    title: '경력직 프리랜서 채용 플랫폼, 디오',
+    href: '/blog/freelanceplatform',
+    image: 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdna%2Fd1hvVy%2FdJMb9aX0toc%2FAAAAAAAAAAAAAAAAAAAAADCXc9cgmA59PP8MN8s73FF_h83kysPZkWM69y0Josav%2Fimg.png%3Fcredential%3DyqXZFxpELC7KVnFOS48ylbz2pIh7yKj8%26expires%3D1782831599%26allow_ip%3D%26allow_referer%3D%26signature%3D%252F1Fy9S8qwyJJ%252FGxtzIl0mX8oFyw%253D'
+  },
+  {
+    name: '로컬로',
+    result: ['구매전환율', '2배 상승'],
+    title: '커뮤니티 기반 여행사, 로컬로',
+    href: '/blog/localtravelbrand',
+    image: 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdna%2FcrsuSq%2FdJMb9QywDDm%2FAAAAAAAAAAAAAAAAAAAAAEz1ZaydKyeS7tD9A3R3aO-mW4kaRnvYIrhTZva5fpL5%2Fimg.png%3Fcredential%3DyqXZFxpELC7KVnFOS48ylbz2pIh7yKj8%26expires%3D1782831599%26allow_ip%3D%26allow_referer%3D%26signature%3D80zojYz78SiHC1J4q%252FMHgGVB3mE%253D'
+  }
+];
+
+const problems = [
+  {
+    title: '제품은 좋은데 유입이 부족해요!',
+    description: '제품에 대한 고객 만족도는 높은데 유입이 부족하신가요? 목표에 맞춘 미디어믹스와 퍼포먼스 마케팅을 통해 압도적인 유입을 만들어드립니다.'
+  },
+  {
+    title: '광고를 운영중이지만 효율이 낮아요!',
+    description: '광고를 운영해봤지만 광고 효율이 너무 낮으신가요? 광고 효율을 낮추고 있는 지점을 파악하고 매체 선택부터 캠페인 구조, 소재 기획까지 필요한 해결책을 제시합니다.'
+  },
+  {
+    title: '고객은 들어오는데 전환율이 낮아요!',
+    description: '사이트로 들어오는 고객은 적지 않은데 목표 전환율이 낮으신가요? 고객이 목표 행동까지 도달하는 과정을 분석하고 제품에 필요한 개선을 제안합니다.'
+  },
+  {
+    title: '브랜딩과 리드 전환을 위한 콘텐츠가 필요해요!',
+    description: '훌륭한 제품이 있고 시장에서 반응하는 메시지도 찾았지만 콘텐츠의 절대량이 부족하신가요? 테크니컬 라이팅부터 정보성 콘텐츠까지 목표에 맞춘 콘텐츠 기획과 작성이 모두 가능합니다.'
+  }
+];
+
+const processSteps = [
+  '풀고 싶은 마케팅 문제를 정해주세요. 필요하다면 함께 찾을 수도 있습니다.',
+  '그 문제를 분석하고 문제를 풀기 위해 어떤 방법이 가장 빠르고 효과적인지 확인합니다.',
+  '필요한 문제 해결 방법을 제안하고 확정합니다.',
+  '퍼포먼스, 콘텐츠, 그로스 등 필요한 카테고리의 업무를 수행하고 문제가 0이 될 때까지 반복합니다.'
+];
+
+const fitYes = [
+  '가치 있는 제품은 있지만 마케팅이 막혀 있는 브랜드',
+  '팀원처럼 함께 일하는 방식을 선호하는 브랜드',
+  '문제를 인정하고 해결해나갈 의지가 있는 브랜드',
+  '내부에 마케터가 없거나 역량이 부족한 브랜드'
+];
+
+const fitNo = [
+  '페이드 광고만을 통해 단기적인 수익을 노리는 브랜드',
+  '단순 운영과 기계적인 결과물만 원하는 브랜드',
+  '마법처럼 모든 문제가 한 번에 해결되길 바라는 브랜드',
+  '이미 내부에 마케팅팀이 있고 충분히 조직화된 브랜드'
+];
+
+const faqs = [
+  ['계약은 월단위로 이루어지나요?', '문제 해결 방식에 따라 다르게 적용됩니다. 퍼포먼스 마케팅 실행이 포함되는 경우에는 최소 단위가 1개월이 될 수 있고, 콘텐츠 기획이나 제작만 포함될 경우에는 훨씬 더 짧은 계약기간을 설정할 수도 있습니다.'],
+  ['진행 비용은 광고비에 비례하나요?', '프로블럼제로는 광고비 규모보다 실제 문제 해결에 투입된 시간과 난이도가 중요하다고 생각합니다. 그래서 광고비의 일정 비율이 아니라 업무에 투입되는 시간을 기준으로 비용을 산정합니다.'],
+  ['업무를 진행하기에 앞서 제안서를 주시나요?', '문제를 확인하고 적합한 방법을 제안하는 과정에서 노션 문서로 제작된 짧은 제안서를 공유드릴 수 있습니다. 하지만 과거 대행사들이 진행했던 방식의 수백페이지 분량의 PPT 제안서는 문제해결의 속도만 늦출 뿐이라고 생각해 제공하지 않습니다.'],
+  ['B2C나 B2B같은 기업 카테고리가 중요한가요?', '프로블럼제로는 마케팅 문제가 무엇인지에 집중하며 이미 다양한 B2C, B2B 기업의 문제를 해결해왔기에 기업의 카테고리는 중요하지 않습니다.'],
+  ['문제를 해결하지 못하면 어떻게 하나요?', '프로블럼제로는 모든 문제를 해결할 수 있다고 장담하지 않습니다. 첫 미팅이나 문제해결 과정중에라도 저희가 해결하기 어려운 문제라고 생각되면 솔직하게 말씀드리고 더 나은 최선의 선택지를 알려드립니다.']
+];
+
+const homeStructuredData = [
+  {
+    '@type': 'WebPage',
+    '@id': `${absoluteUrl('/', Astro.site)}#webpage`,
+    url: absoluteUrl('/', Astro.site),
+    name: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    inLanguage: 'ko-KR',
+    isPartOf: { '@id': `${absoluteUrl('/', Astro.site)}#website` },
+    about: { '@id': `${absoluteUrl('/', Astro.site)}#professional-service` },
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: absoluteUrl('/og.png', Astro.site)
+    }
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${absoluteUrl('/', Astro.site)}#faq`,
+    mainEntity: faqs.map(([question, answer]) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: answer
+      }
+    }))
+  }
+];
+---
+
+<Layout hideHeader={true} bodyClass="home-shell" structuredData={homeStructuredData}>
+  <section class="kulin-hero" aria-labelledby="hero-title">
+    <div class="kulin-hero__panel">
+      <header class="kulin-hero__nav">
+        <a href="/" class="brand-logo kulin-hero__logo" aria-label="problem0 홈으로 이동">problem<span>0</span></a>
+        <nav class="kulin-hero__links" aria-label="홈 주요 메뉴">
+          <a href="/about">소개</a>
+          <a href="/about#cases">케이스</a>
+          <a href="/blog">블로그</a>
+          <a
+            id="cta-home-nav-contact"
+            class="kulin-hero__cta"
+            href="https://tally.so/r/nGYRaO"
+            target="_blank"
+            rel="noreferrer"
+            data-analytics-event="contact_click"
+            data-analytics-page="home"
+            data-analytics-location="nav"
+          >문의하기</a>
+        </nav>
+        <button id="home-menu-toggle" class="kulin-hero__menu-button" type="button" aria-label="모바일 메뉴 열기" aria-expanded="false">
+          <span></span>
+        </button>
+      </header>
+
+      <nav id="home-mobile-menu" class="kulin-hero__mobile-menu" aria-label="홈 모바일 메뉴">
+        <a href="/about">소개</a>
+        <a href="/about#cases">케이스</a>
+        <a href="/blog">블로그</a>
+        <a
+          id="cta-home-mobile-contact"
+          href="https://tally.so/r/nGYRaO"
+          target="_blank"
+          rel="noreferrer"
+          data-analytics-event="contact_click"
+          data-analytics-page="home"
+          data-analytics-location="mobile_nav"
+        >문의하기</a>
+      </nav>
+
+      <div class="kulin-hero__content">
+        <h1 id="hero-title" class="kulin-hero__title">
+          <span>운영하지 않고 해결합니다.</span>
+          <span><mark class="kulin-hero__highlight">마케팅 문제를 0으로</mark> 만드세요.</span>
+        </h1>
+        <a
+          id="cta-home-hero-contact"
+          class="kulin-hero__main-cta"
+          href="https://tally.so/r/nGYRaO"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="문제해결 문의하기"
+          data-analytics-event="contact_click"
+          data-analytics-page="home"
+          data-analytics-location="hero"
+        >
+          문제해결 문의하기
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="interlude-copy" aria-label="프로블럼제로 소개 문장">
+    <p>당신의 <mark>마케팅 문제</mark>도 분명히 해결할 수 있습니다.</p>
+  </section>
+
+  <section class="kulin-frame" aria-label="레퍼런스 성과 섹션">
+    <div class="kulin-frame__panel">
+      <div class="reference-carousel" data-reference-carousel tabindex="0" aria-label="레퍼런스 케이스 목록">
+        {references.map((reference) => <ReferenceCard {...reference} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="about-split" aria-label="정세현 소개">
+    <div class="about-split__inner">
+      <article class="about-split__intro">
+        <div class="about-split__intro-head">
+          <div>
+            <p>안녕하세요, 정세현입니다.</p>
+            <span>problem0 · Marketing Problem Solver</span>
+          </div>
+          <div class="about-split__badge" aria-hidden="true">⚾</div>
+        </div>
+        <div class="about-split__intro-bottom">
+          <h2>10년 동안 F&B, D2C, B2B, 패션과 바이오를 넘나들며 마케팅 필드를 누볐습니다. 여전히 많은 대행사는 ‘운영’중심의 방법론을 제안하지만 그것만으로는 마케팅 문제가 해결되지 않는 모습을 많이 목격했습니다. 그래서 프로블럼제로는 복잡하게 얽혀 있는 스타트업의 마케팅 문제를 진단하고 필요한 해결책을 실행합니다.</h2>
+          <a class="about-split__link" href="/about" aria-label="정세현 소개 더 알아보기">더 알아보기 <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+
+      <article class="about-split__detail">
+        <div class="about-split__questions">
+          <section>
+            <h3>왜 문제 해결인가요?</h3>
+            <p>퍼포먼스, 콘텐츠, 그로스는 결국 마케팅 문제를 해결하기 위한 하나의 방법론입니다. 지금 고객에게 가치가 전달되지 못하도록 막고 있는 마케팅 문제를 정확하게 찾아낸 후 어떤 방법론으로 해결할 것인지 함께 고민하고 가장 맞는 방법을 사용하는 것이 프로블럼제로의 방향성입니다.</p>
+          </section>
+          <section>
+            <h3>왜 스타트업인가요?</h3>
+            <p>스타트업은 제품의 PMF(Product Market Fit)를 찾았음에도 내부에 마케터가 없거나 마케팅 역량이 부족해 제품의 가치를 고객들에게 충분히 알리지 못하는 상황을 겪습니다. 프로블럼제로는 가치 있는 제품이 더 많은 고객들을 만날 수 있도록 돕는 것에 집중하고자 합니다.</p>
+          </section>
+          <section>
+            <h3>왜 프로블럼제로인가요?</h3>
+            <p>프로블럼제로와 함께한다는 건 F&B부터 B2B SaaS 카테고리까지 약 10년 동안 마케팅 필드에서 수많은 문제를 직접 해결한 마케팅 문제 해결 전문가와 함께한다는 것을 의미합니다. 프로블럼제로는 단순한 조언자가 아니라 24시간 비동기로 함께 고민하고 문제를 해결하는 팀원이 되는 것을 선호합니다.</p>
+          </section>
+        </div>
+      </article>
+
+      <figure class="about-split__quote">
+        <div class="about-split__quote-badge" aria-hidden="true">👍</div>
+        <blockquote><span aria-hidden="true">“</span>구매당 광고비가 4만 원에서 2만 원대로 절반 가까이 개선됐습니다. 데이터 기반으로 문제를 함께 짚어주셔서 광고 운영 방식 자체가 바뀌었습니다.<span aria-hidden="true">”</span></blockquote>
+        <figcaption>로컬로 이승빈 CEO</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="problem-focus" aria-label="마케팅 문제 해결 영역">
+    <div class="problem-focus__panel">
+      <div class="problem-focus__top">
+        <h2>가치 있는 제품을 위한<br />마케팅 문제 해결</h2>
+        <p>풀고 싶은 마케팅 문제가 있나요? 프로블럼제로는 방법론이 아닌 아래 네 가지 문제에 집중하여 적합한 해결 방법을 제안합니다.</p>
+      </div>
+      <div class="problem-focus__grid">
+        {problems.map((problem) => (
+          <article class="problem-focus__item">
+            <h3>{problem.title}</h3>
+            <p>{problem.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="process-flow" aria-label="프로블럼제로 협업 프로세스">
+    <h2>프로블럼제로는 <mark>운영하지 않고 해결</mark>합니다.</h2>
+    <div class="process-flow__panel">
+      <ol>
+        {processSteps.map((step, index) => (
+          <li>
+            <span>STEP {String(index + 1).padStart(2, '0')}</span>
+            <p>{step}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="fit-section" aria-label="잘 맞는 브랜드와 맞지 않는 브랜드">
+    <div class="fit-section__panel">
+      <h2>프로블럼제로는 가치 있는 제품을 보유한 스타트업 고객들과 함께합니다.</h2>
+      <div class="fit-section__grid">
+        <FitCard title="이런 브랜드가 잘 맞습니다." items={fitYes} />
+        <FitCard title="이런 브랜드와는 맞지 않을 수 있습니다." items={fitNo} tone="negative" />
+      </div>
+      <div class="fit-section__cta">
+        <CTAButton
+          id="cta-home-fit-contact"
+          label="저희와 맞을 것 같다면 문의하세요!"
+          variant="hero"
+          data-analytics-event="contact_click"
+          data-analytics-page="home"
+          data-analytics-location="fit_cta"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section container">
+    <h2>자주 묻는 질문</h2>
+    <div>
+      {faqs.map(([question, answer]) => <FAQItem question={question} answer={answer} />)}
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="final-cta__panel">
+      <h2>함께 문제를 해결해볼까요?</h2>
+      <p class="final-cta__copy">연락처와 회사명을 남겨주시면 48시간 내에 연락드리고 대화를 나눠보실 수 있습니다.</p>
+      <a
+        id="cta-home-final-contact"
+        class="final-cta__button"
+        href="https://tally.so/r/nGYRaO"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="문제 해결 시작하기"
+        data-analytics-event="contact_click"
+        data-analytics-page="home"
+        data-analytics-location="final_cta"
+      >
+        문제 해결 시작하기
+      </a>
+    </div>
+  </section>
+</Layout>

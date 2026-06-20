@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { absoluteUrl, buildBreadcrumbList } from '../../utils/seo';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = ['전체', '고객 사례', '마케팅 인사이트'];
+const blogDescription = '스타트업 마케팅 문제 해결을 위한 프로블럼제로의 콘텐츠 허브입니다.';
+const blogStructuredData = [
+  buildBreadcrumbList(
+    [
+      { name: '홈', path: '/' },
+      { name: '블로그', path: '/blog' }
+    ],
+    Astro.site
+  ),
+  {
+    '@type': 'Blog',
+    '@id': `${absoluteUrl('/blog', Astro.site)}#blog`,
+    url: absoluteUrl('/blog', Astro.site),
+    name: '문제 해결 블로그',
+    description: blogDescription,
+    inLanguage: 'ko-KR',
+    publisher: { '@id': `${absoluteUrl('/', Astro.site)}#organization` },
+    blogPost: posts.map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.data.title,
+      url: absoluteUrl(`/blog/${post.slug}`, Astro.site),
+      datePublished: post.data.pubDate.toISOString(),
+      author: { '@id': `${absoluteUrl('/', Astro.site)}#founder` },
+      publisher: { '@id': `${absoluteUrl('/', Astro.site)}#organization` }
+    }))
+  },
+  {
+    '@type': 'ItemList',
+    '@id': `${absoluteUrl('/blog', Astro.site)}#itemlist`,
+    itemListElement: posts.map((post, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: absoluteUrl(`/blog/${post.slug}`, Astro.site),
+      name: post.data.title
+    }))
+  }
+];
+---
+
+<Layout title="블로그 | problem0" description={blogDescription} hideHeader={true} bodyClass="home-shell" structuredData={blogStructuredData}>
+  <section class="kulin-hero blog-hero blog-hero--nav-only" aria-label="블로그 상단 메뉴">
+    <div class="kulin-hero__panel">
+      <header class="kulin-hero__nav">
+        <a href="/" class="brand-logo kulin-hero__logo" aria-label="problem0 홈으로 이동">problem<span>0</span></a>
+        <nav class="kulin-hero__links" aria-label="블로그 주요 메뉴">
+          <a href="/about">소개</a>
+          <a href="/about#cases">케이스</a>
+          <a href="/blog">블로그</a>
+          <a
+            id="cta-blog-nav-contact"
+            class="kulin-hero__cta"
+            href="https://tally.so/r/nGYRaO"
+            target="_blank"
+            rel="noreferrer"
+            data-analytics-event="contact_click"
+            data-analytics-page="blog"
+            data-analytics-location="nav"
+          >문의하기</a>
+        </nav>
+        <button id="home-menu-toggle" class="kulin-hero__menu-button" type="button" aria-label="모바일 메뉴 열기" aria-expanded="false">
+          <span></span>
+        </button>
+      </header>
+
+      <nav id="home-mobile-menu" class="kulin-hero__mobile-menu" aria-label="블로그 모바일 메뉴">
+        <a href="/about">소개</a>
+        <a href="/about#cases">케이스</a>
+        <a href="/blog">블로그</a>
+        <a
+          id="cta-blog-mobile-contact"
+          href="https://tally.so/r/nGYRaO"
+          target="_blank"
+          rel="noreferrer"
+          data-analytics-event="contact_click"
+          data-analytics-page="blog"
+          data-analytics-location="mobile_nav"
+        >문의하기</a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="blog-list">
+    <div class="blog-list__head">
+      <h2>문제 해결 블로그</h2>
+      <div class="blog-list__controls">
+        <label class="blog-list__search">
+          <span class="sr-only">블로그 검색</span>
+          <input id="blog-search" type="search" placeholder="검색" autocomplete="off" />
+        </label>
+        <nav class="blog-list__categories" aria-label="블로그 카테고리">
+          {categories.map((category) => (
+            <button class="blog-list__category" type="button" data-category={category} aria-pressed={category === '전체' ? 'true' : 'false'}>
+              {category}
+            </button>
+          ))}
+        </nav>
+      </div>
+    </div>
+
+    <div class="blog-list__grid">
+      {posts.map((post) => (
+        <a
+          href={`/blog/${post.slug}`}
+          class="blog-card"
+          data-category={post.data.category}
+          data-search={post.data.title}
+        >
+          <div class:list={['blog-card__thumbnail', post.data.thumbnail && 'blog-card__thumbnail--image', post.data.category === '고객 사례' ? 'blog-card__thumbnail--case' : 'blog-card__thumbnail--insight']}>
+            {post.data.thumbnail && <img src={post.data.thumbnail} alt="" loading="lazy" decoding="async" />}
+          </div>
+          <div class="blog-card__body">
+            <p class="blog-card__meta">
+              <span>{post.data.category}</span>
+              <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString('ko-KR')}</time>
+            </p>
+            <h3>{post.data.title}</h3>
+            <p class="blog-card__description">{post.data.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+    <p class="blog-list__empty" hidden>검색 결과가 없습니다.</p>
+  </section>
+</Layout>

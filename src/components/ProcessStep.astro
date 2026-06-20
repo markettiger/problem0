@@ -1,0 +1,9 @@
+---
+const { step, text } = Astro.props;
+---
+
+<li class="relative grid gap-5 border-l border-ink pb-12 pl-8 md:grid-cols-[160px_1fr] md:gap-10">
+  <span class="absolute -left-3 top-0 h-6 w-6 rounded-full border border-ink bg-accent"></span>
+  <p class="text-sm font-extrabold uppercase text-primary">{step}</p>
+  <p class="max-w-3xl text-3xl font-extrabold leading-tight md:text-5xl">{text}</p>
+</li>

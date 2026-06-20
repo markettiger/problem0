@@ -1,0 +1,237 @@
+---
+import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_SITE_URL,
+  DEFAULT_TITLE,
+  buildStructuredDataGraph,
+  normalizeMetaText
+} from '../utils/seo';
+
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  image = DEFAULT_OG_IMAGE,
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  section,
+  tags = [],
+  structuredData = [],
+  hideHeader = false,
+  bodyClass = ''
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site || DEFAULT_SITE_URL);
+const ogImage = new URL(image, Astro.site || DEFAULT_SITE_URL);
+const jsonLd = buildStructuredDataGraph(structuredData, Astro.site);
+const metaDescription = normalizeMetaText(description);
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+    <meta name="description" content={metaDescription} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="problem0" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="problem0" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {section && <meta property="article:section" content={section} />}
+    {tags.map((tag: string) => <meta property="article:tag" content={tag} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="problem0" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <!-- Google Tag Manager -->
+    <script is:inline>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-TZV4H8PT');
+    </script>
+    <!-- End Google Tag Manager -->
+    <ViewTransitions />
+  </head>
+  <body class={bodyClass}>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-TZV4H8PT"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {!hideHeader && <Header />}
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      function initializeProblem0Interactions() {
+        document.querySelectorAll('.faq-item').forEach((item) => {
+          item.addEventListener('toggle', () => {
+            const icon = item.querySelector('.faq-icon');
+            if (icon) icon.textContent = item.open ? '-' : '+';
+          });
+        });
+
+        const homeMenuButton = document.querySelector('#home-menu-toggle');
+        const homeMobileMenu = document.querySelector('#home-mobile-menu');
+
+        if (homeMenuButton && homeMobileMenu) {
+          homeMenuButton.onclick = () => {
+            const isOpen = homeMenuButton.getAttribute('aria-expanded') === 'true';
+            homeMenuButton.setAttribute('aria-expanded', String(!isOpen));
+            homeMobileMenu.classList.toggle('is-open');
+          };
+        }
+
+        const categoryButtons = document.querySelectorAll('.blog-list__category');
+        const blogCards = document.querySelectorAll('.blog-card');
+        const blogSearchInput = document.querySelector('#blog-search');
+        const blogEmpty = document.querySelector('.blog-list__empty');
+
+        const applyBlogFilters = (selectedCategory = '전체', searchQuery = '') => {
+          const availableCategories = Array.from(categoryButtons).map((button) => button.getAttribute('data-category'));
+          const normalizedCategory = availableCategories.includes(selectedCategory) ? selectedCategory : '전체';
+          const normalizedQuery = searchQuery.trim().toLocaleLowerCase('ko-KR');
+          let visibleCount = 0;
+
+          categoryButtons.forEach((item) => {
+            item.setAttribute('aria-pressed', String(item.getAttribute('data-category') === normalizedCategory));
+          });
+
+          blogCards.forEach((card) => {
+            const matchesCategory = normalizedCategory === '전체' || card.getAttribute('data-category') === normalizedCategory;
+            const searchSource = (card.getAttribute('data-search') || '').toLocaleLowerCase('ko-KR');
+            const matchesSearch = !normalizedQuery || searchSource.includes(normalizedQuery);
+            const shouldShow = matchesCategory && matchesSearch;
+
+            if (shouldShow) visibleCount += 1;
+            card.toggleAttribute('hidden', !shouldShow);
+          });
+
+          if (blogEmpty) {
+            blogEmpty.toggleAttribute('hidden', visibleCount > 0);
+          }
+        };
+
+        if (categoryButtons.length && blogCards.length) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const urlCategory = urlParams.get('category') || '전체';
+          const urlQuery = urlParams.get('q') || '';
+
+          if (blogSearchInput) {
+            blogSearchInput.value = urlQuery;
+          }
+
+          applyBlogFilters(urlCategory, urlQuery);
+        }
+
+        categoryButtons.forEach((button) => {
+          if (button.dataset.filterReady === 'true') return;
+          button.dataset.filterReady = 'true';
+
+          button.addEventListener('click', () => {
+            const selectedCategory = button.getAttribute('data-category') || '전체';
+            const nextUrl = new URL(window.location.href);
+
+            if (selectedCategory === '전체') {
+              nextUrl.searchParams.delete('category');
+            } else {
+              nextUrl.searchParams.set('category', selectedCategory);
+            }
+
+            window.history.replaceState({}, '', nextUrl);
+            applyBlogFilters(selectedCategory, blogSearchInput?.value || '');
+          });
+        });
+
+        if (blogSearchInput && blogCards.length && blogSearchInput.dataset.searchReady !== 'true') {
+          blogSearchInput.dataset.searchReady = 'true';
+
+          blogSearchInput.addEventListener('input', () => {
+            const selectedCategory =
+              Array.from(categoryButtons).find((button) => button.getAttribute('aria-pressed') === 'true')?.getAttribute('data-category') || '전체';
+            const nextUrl = new URL(window.location.href);
+            const searchQuery = blogSearchInput.value.trim();
+
+            if (searchQuery) {
+              nextUrl.searchParams.set('q', searchQuery);
+            } else {
+              nextUrl.searchParams.delete('q');
+            }
+
+            window.history.replaceState({}, '', nextUrl);
+            applyBlogFilters(selectedCategory, blogSearchInput.value);
+          });
+        }
+
+        document.querySelectorAll('[data-copy-url]').forEach((button) => {
+          if (button.dataset.copyReady === 'true') return;
+          button.dataset.copyReady = 'true';
+
+          button.addEventListener('click', async () => {
+            const url = button.getAttribute('data-copy-url');
+            if (!url) return;
+
+            await navigator.clipboard?.writeText(url);
+            button.setAttribute('aria-label', '링크가 복사되었습니다');
+          });
+        });
+
+        const underlineTargets = document.querySelectorAll(
+          '.kulin-hero__highlight, .interlude-copy mark, .about-profile__intro h2 mark, .about-problems h2 mark, .process-flow h2 mark, .process-flow__panel span, .fit-card h3 mark'
+        );
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          underlineTargets.forEach((target) => target.classList.add('is-underline-visible'));
+          return;
+        }
+
+        const underlineObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-underline-visible');
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.45, rootMargin: '0px 0px -8% 0px' }
+        );
+
+        underlineTargets.forEach((target) => underlineObserver.observe(target));
+      }
+
+      document.addEventListener('astro:page-load', initializeProblem0Interactions);
+      document.addEventListener('astro:after-swap', initializeProblem0Interactions);
+      initializeProblem0Interactions();
+    </script>
+  </body>
+</html>

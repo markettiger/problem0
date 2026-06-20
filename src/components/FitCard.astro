@@ -1,0 +1,19 @@
+---
+const { title, items, tone = 'positive' } = Astro.props;
+---
+
+<article class:list={['fit-card', tone === 'positive' ? 'fit-card--positive' : 'fit-card--negative']}>
+  <h3>
+    {title === '이런 브랜드가 잘 맞습니다.'
+      ? <>이런 브랜드가 <mark>잘 맞습니다.</mark></>
+      : <>이런 브랜드와는 <mark>맞지 않을 수 있습니다.</mark></>}
+  </h3>
+  <ul>
+    {items.map((item) => (
+      <li>
+        <span aria-hidden="true">{tone === 'positive' ? '✓' : '−'}</span>
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+</article>

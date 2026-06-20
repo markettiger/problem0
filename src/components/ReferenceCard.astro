@@ -1,0 +1,26 @@
+---
+const { name, result, href, image, title } = Astro.props;
+const resultLines = Array.isArray(result) ? result : [result];
+const isExternal = href?.startsWith('http');
+---
+
+<a
+  href={href}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noreferrer' : undefined}
+  class="reference-card group"
+  aria-label={`${name} 성과 사례 보기`}
+>
+  <div class="reference-card__image">
+    <img src={image} alt={`${name} 사례 대표 이미지`} loading="lazy" decoding="async" />
+  </div>
+  <div class="reference-card__body">
+    <div>
+      <p class="reference-card__name">{name}</p>
+      {title && <p class="reference-card__title">{title}</p>}
+    </div>
+    <p class="reference-card__result">
+      {resultLines.map((line) => <span>{line}</span>)}
+    </p>
+  </div>
+</a>

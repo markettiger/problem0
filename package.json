@@ -1,0 +1,22 @@
+{
+  "name": "problem0",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "migrate:tistory": "node scripts/migrate-tistory.mjs",
+    "sync:og-cards": "node scripts/sync-og-cards.mjs"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.5",
+    "astro": "^4.16.18",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "rollup": "npm:@rollup/wasm-node@4.61.1"
+  }
+}

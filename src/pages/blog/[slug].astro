@@ -1,0 +1,185 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { DEFAULT_SITE_URL, absoluteUrl, buildBreadcrumbList, normalizeMetaText } from '../../utils/seo';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await post.render();
+const postUrl = new URL(Astro.url.pathname, Astro.site || DEFAULT_SITE_URL).toString();
+const encodedPostUrl = encodeURIComponent(postUrl);
+const encodedPostTitle = encodeURIComponent(post.data.title);
+const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedPostUrl}`;
+const threadsShareUrl = `https://www.threads.net/intent/post?text=${encodedPostTitle}%20${encodedPostUrl}`;
+const categoryListUrl = `/blog?category=${encodeURIComponent(post.data.category)}`;
+const postImage = post.data.thumbnail || '/og.png';
+const postImageUrl = absoluteUrl(postImage, Astro.site);
+const publishedTime = post.data.pubDate.toISOString();
+const postDescription = normalizeMetaText(post.data.description);
+const blogPostStructuredData = [
+  buildBreadcrumbList(
+    [
+      { name: '홈', path: '/' },
+      { name: '블로그', path: '/blog' },
+      { name: post.data.title, path: `/blog/${post.slug}` }
+    ],
+    Astro.site
+  ),
+  {
+    '@type': 'BlogPosting',
+    '@id': `${postUrl}#blogposting`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl
+    },
+    headline: post.data.title,
+    description: postDescription,
+    image: [postImageUrl],
+    datePublished: publishedTime,
+    dateModified: publishedTime,
+    inLanguage: 'ko-KR',
+    articleSection: post.data.category,
+    keywords: post.data.tags,
+    author: { '@id': `${absoluteUrl('/', Astro.site)}#founder` },
+    publisher: { '@id': `${absoluteUrl('/', Astro.site)}#organization` },
+    isPartOf: { '@id': `${absoluteUrl('/blog', Astro.site)}#blog` },
+    isBasedOn: post.data.originalUrl || undefined,
+    about: [
+      { '@id': `${absoluteUrl('/', Astro.site)}#professional-service` },
+      ...post.data.tags.map((tag: string) => ({ '@type': 'Thing', name: tag }))
+    ]
+  }
+];
+---
+
+<Layout
+  title={`${post.data.title} | problem0`}
+  description={postDescription}
+  image={postImage}
+  ogType="article"
+  publishedTime={publishedTime}
+  modifiedTime={publishedTime}
+  section={post.data.category}
+  tags={post.data.tags}
+  structuredData={blogPostStructuredData}
+  hideHeader={true}
+  bodyClass="home-shell"
+>
+  <section class="kulin-hero blog-hero blog-hero--post" aria-labelledby="blog-post-hero-title">
+    <div class="kulin-hero__panel">
+      <header class="kulin-hero__nav">
+        <a href="/" class="brand-logo kulin-hero__logo" aria-label="problem0 홈으로 이동">problem<span>0</span></a>
+        <nav class="kulin-hero__links" aria-label="블로그 글 주요 메뉴">
+          <a href="/about">소개</a>
+          <a href="/about#cases">케이스</a>
+          <a href="/blog">블로그</a>
+          <a
+            id="cta-blog-post-nav-contact"
+            class="kulin-hero__cta"
+            href="https://tally.so/r/nGYRaO"
+            target="_blank"
+            rel="noreferrer"
+            data-analytics-event="contact_click"
+            data-analytics-page="blog_post"
+            data-analytics-location="nav"
+            data-analytics-post={post.slug}
+          >문의하기</a>
+        </nav>
+        <button id="home-menu-toggle" class="kulin-hero__menu-button" type="button" aria-label="모바일 메뉴 열기" aria-expanded="false">
+          <span></span>
+        </button>
+      </header>
+
+      <nav id="home-mobile-menu" class="kulin-hero__mobile-menu" aria-label="블로그 글 모바일 메뉴">
+        <a href="/about">소개</a>
+        <a href="/about#cases">케이스</a>
+        <a href="/blog">블로그</a>
+        <a
+          id="cta-blog-post-mobile-contact"
+          href="https://tally.so/r/nGYRaO"
+          target="_blank"
+          rel="noreferrer"
+          data-analytics-event="contact_click"
+          data-analytics-page="blog_post"
+          data-analytics-location="mobile_nav"
+          data-analytics-post={post.slug}
+        >문의하기</a>
+      </nav>
+
+      <div class="kulin-hero__content">
+        <h1 id="blog-post-hero-title" class="kulin-hero__title">
+          <span>{post.data.title}</span>
+        </h1>
+        <p class="blog-hero__meta">
+          <a href={categoryListUrl}>{post.data.category}</a>
+          <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString('ko-KR')}</time>
+        </p>
+        <div class="blog-share" aria-label="SNS 공유">
+          <a href={linkedInShareUrl} target="_blank" rel="noopener noreferrer" aria-label="링크드인으로 공유">
+            <span class="blog-share__icon blog-share__icon--linkedin" aria-hidden="true"></span>
+          </a>
+          <a href={threadsShareUrl} target="_blank" rel="noopener noreferrer" aria-label="스레드로 공유">
+            <span class="blog-share__icon blog-share__icon--threads" aria-hidden="true"></span>
+          </a>
+          <button type="button" data-copy-url={postUrl} aria-label="링크 복사">
+            <span class="blog-share__icon blog-share__icon--link" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <article class="blog-post container grid gap-12 py-16 md:grid-cols-[220px_1fr] md:py-24">
+    <aside class="hidden md:block">
+      <div class="sticky top-24">
+        <p class="mb-4 text-sm font-extrabold text-primary">목차</p>
+        <nav class="grid gap-2 text-sm font-extrabold text-mute" aria-label="글 목차">
+          {headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => (
+            <a class="transition hover:text-primary" href={`#${heading.slug}`}>{heading.text}</a>
+          ))}
+        </nav>
+      </div>
+    </aside>
+    <div>
+      <div class="prose-problem0">
+        <Content />
+      </div>
+      <aside class="blog-post-cta" aria-label="마케팅 문제 해결 문의">
+        <h2>
+          <span>해결이 필요한 마케팅 문제가 있나요?</span>
+          <span>프로블럼제로와 함께 해결하세요.</span>
+        </h2>
+        <a
+          id="cta-blog-post-bottom-contact"
+          href="https://tally.so/r/nGYRaO"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="문제 해결 문의하기"
+          data-analytics-event="contact_click"
+          data-analytics-page="blog_post"
+          data-analytics-location="post_bottom_cta"
+          data-analytics-post={post.slug}
+        >
+          문제 해결 문의하기
+        </a>
+      </aside>
+    </div>
+  </article>
+  <script>
+    document.querySelectorAll('.prose-problem0 a[href]').forEach((link) => {
+      const href = link.getAttribute('href') || '';
+
+      if (href.startsWith('#')) return;
+
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    });
+  </script>
+</Layout>

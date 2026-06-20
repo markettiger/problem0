@@ -1,0 +1,216 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { absoluteUrl, buildBreadcrumbList } from '../utils/seo';
+
+const lectures = [
+  '서울시 청년취업사관학교 마케팅 담임 멘토 4회 역임',
+  '금천구청 청춘삘띵 마케터 멘토링 진행',
+  '홍익대 엔터프러너십 특강 진행',
+  '소비재 마케팅 관련 기업 특강 진행',
+  '소셜 앱 서비스 마케팅 특강 진행'
+];
+
+const careers = [
+  ['현재', '마케팅 문제해결 에이전시 프로블럼제로 운영'],
+  ['2022', 'B2B SaaS 기업 플렉스 콘텐츠 마케터 재직'],
+  ['2021', '생활용품 구독 서비스 와이즐리 그로스 마케터 재직'],
+  ['2020', '그로스 에이전시 오피노 마케팅 팀장 재직'],
+  ['2017', 'F&B 프랜차이즈 브롱스 마케팅 팀장 재직']
+];
+
+const numberHints = [
+  ['1', '마케팅 문제 해결에 한 달만 필요하다면 한 달만 계약합니다. 패키지 계약은 강요되지 않습니다. 그럼에도 4년째 함께하고 있는 고객사도 계십니다.'],
+  ['7', 'B2B, B2C 회사를 합쳐 7개의 회사에서 마케터로 일했습니다. 소비재, 패션, F&B, B2B SaaS 등 다양한 카테고리를 거쳤습니다.'],
+  ['8', '프로블럼제로를 운영하며 8곳의 회사와 마케팅 문제를 해결했습니다. 퍼포먼스, 그로스, 콘텐츠 등 다양한 주제의 문제가 있었습니다.'],
+  ['60', '60개 넘는 B2B 고객 인터뷰 콘텐츠를 기획하고 제작했습니다. 산업에 대한 풍부한 이해력과 커뮤니케이션 능력을 바탕으로 지금도 꾸준히 콘텐츠 협업을 진행 중입니다.']
+];
+
+const solvedProblems = [
+  ['B2B 해외 세일즈 스타트업', '리드 전환 콘텐츠 부족', '12건 이상 콘텐츠 제작'],
+  ['테크바이오 스타트업', '문화 형성을 위한 콘텐츠 부족', '40건 이상 인터뷰 콘텐츠 제작'],
+  ['소셜 앱 서비스 스타트업', '목표보다 높은 CPI', 'CPI 최대 62% 하락'],
+  ['프리랜서 고용 플랫폼 스타트업', '리드 전환 콘텐츠 부족', '10건 이상의 인터뷰 콘텐츠 제작'],
+  ['커뮤니티 여행 스타트업', '낮은 구매 전환율', '구매전환율 2배 상승'],
+  ['여성 잡화 브랜드', '낮은 광고 효율', '구매전환 182% 상승'],
+  ['디자이너 백팩 브랜드', '낮은 광고 효율', '최대 매출 4배 상승']
+];
+
+const aboutDescription = '프로블럼제로를 만든 정세현의 마케팅 문제 해결 관점, 이력, 브랜드와 함께 해결해온 문제를 소개합니다.';
+const aboutStructuredData = [
+  buildBreadcrumbList(
+    [
+      { name: '홈', path: '/' },
+      { name: '소개', path: '/about' }
+    ],
+    Astro.site
+  ),
+  {
+    '@type': 'AboutPage',
+    '@id': `${absoluteUrl('/about', Astro.site)}#webpage`,
+    url: absoluteUrl('/about', Astro.site),
+    name: '정세현 소개 | problem0',
+    description: aboutDescription,
+    inLanguage: 'ko-KR',
+    isPartOf: { '@id': `${absoluteUrl('/', Astro.site)}#website` },
+    about: { '@id': `${absoluteUrl('/', Astro.site)}#founder` },
+    mainEntity: { '@id': `${absoluteUrl('/', Astro.site)}#founder` }
+  }
+];
+---
+
+<Layout title="정세현 소개 | problem0" description={aboutDescription} hideHeader={true} bodyClass="home-shell" structuredData={aboutStructuredData}>
+  <section class="kulin-hero about-hero" aria-labelledby="about-hero-title">
+    <div class="kulin-hero__panel">
+      <header class="kulin-hero__nav">
+        <a href="/" class="brand-logo kulin-hero__logo" aria-label="problem0 홈으로 이동">problem<span>0</span></a>
+        <nav class="kulin-hero__links" aria-label="소개 페이지 주요 메뉴">
+          <a href="/about">소개</a>
+          <a href="/about#cases">케이스</a>
+          <a href="/blog">블로그</a>
+          <a
+            id="cta-about-nav-contact"
+            class="kulin-hero__cta"
+            href="https://tally.so/r/nGYRaO"
+            target="_blank"
+            rel="noreferrer"
+            data-analytics-event="contact_click"
+            data-analytics-page="about"
+            data-analytics-location="nav"
+          >문의하기</a>
+        </nav>
+        <button id="home-menu-toggle" class="kulin-hero__menu-button" type="button" aria-label="모바일 메뉴 열기" aria-expanded="false">
+          <span></span>
+        </button>
+      </header>
+
+      <nav id="home-mobile-menu" class="kulin-hero__mobile-menu" aria-label="소개 페이지 모바일 메뉴">
+        <a href="/about">소개</a>
+        <a href="/about#cases">케이스</a>
+        <a href="/blog">블로그</a>
+        <a
+          id="cta-about-mobile-contact"
+          href="https://tally.so/r/nGYRaO"
+          target="_blank"
+          rel="noreferrer"
+          data-analytics-event="contact_click"
+          data-analytics-page="about"
+          data-analytics-location="mobile_nav"
+        >문의하기</a>
+      </nav>
+
+      <div class="kulin-hero__content">
+        <h1 id="about-hero-title" class="kulin-hero__title">
+          <span>안녕하세요,</span>
+          <span><mark class="kulin-hero__highlight">마케팅 문제 해결자</mark></span>
+          <span>정세현입니다.</span>
+        </h1>
+        <a class="about-hero__scroll" href="#about-profile" aria-label="정세현 소개 본문으로 이동">
+          정세현에 대해서 읽어보기
+          <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about-profile" class="about-profile">
+    <div class="about-profile__inner">
+      <div class="about-profile__intro">
+        <h2>프로블럼제로를 <mark>만든 이유</mark></h2>
+        <div class="about-profile__copy">
+          <p>10년 동안 마케터로 일하며 다양한 브랜드의 마케팅 문제를 접할 기회가 있었습니다.</p>
+          <p>몇몇 경우에는 작은 개선 만으로도 매출이 오르거나 리드가 생길 때도 있었습니다. 하지만 많은 경우에는 한두 가지 개선과 운영만으로는 마케팅 문제 해결에 한계가 있었습니다. 그 이유는 ‘문제’에 집중하지 않고 마케터가, 혹은 대행사가 제공할 수 있는 ‘기능’에 맞춘 마케팅을 고수했기 때문이라고 생각합니다.</p>
+          <p>그래서 프로블럼제로는 특정한 한 가지 기능이 아닌 문제를 ‘해결’하는 것에 집중하고자 합니다. 그것이 퍼포먼스이든, 콘텐츠이든, 그로스든 상관없습니다. 심지어 프로블럼제로가 제공할 수 있는 게 아니라면 그렇다고 말씀드리겠습니다. 제가 유일하게 집중하는 건 좋은 가치를 가진 제품이 소비자를 만나게 만드는 것입니다.</p>
+        </div>
+      </div>
+
+      <section id="cases" class="about-problems" aria-labelledby="about-problems-title">
+        <h2 id="about-problems-title">브랜드와 함께 <mark>해결해온 문제</mark>들</h2>
+        <div class="about-problems__table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">브랜드</th>
+                <th scope="col">문제</th>
+                <th scope="col">해결</th>
+              </tr>
+            </thead>
+            <tbody>
+              {solvedProblems.map(([brand, problem, solution]) => (
+                <tr>
+                  <td>{brand}</td>
+                  <td>{problem}</td>
+                  <td>{solution}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="about-numbers" aria-labelledby="about-numbers-title">
+        <div class="about-numbers__top">
+          <h2 id="about-numbers-title"><span>숫자에서</span> <span>힌트를 발견하세요.</span></h2>
+          <span class="about-numbers__emoji" aria-hidden="true">💡</span>
+        </div>
+        <div class="about-numbers__grid">
+          {numberHints.map(([number, text]) => (
+            <article class="about-numbers__item">
+              <h3>{number}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="about-history" aria-labelledby="about-history-title">
+        <h2 id="about-history-title">지금까지의 이력</h2>
+
+        <div class="about-history__grid">
+          <section class="about-history-card about-history-card--career">
+            <h3>회사 이력</h3>
+            <ul>
+              {careers.map(([year, item]) => (
+                <li>
+                  <strong class:list={[year === '현재' && 'is-current']}>{year}</strong>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="about-history-card about-history-card--lecture">
+            <h3>강의 이력</h3>
+          <ul>
+            {lectures.map((item) => (
+                <li>
+                  <span aria-hidden="true">✓</span>
+                  <span>{item}</span>
+                </li>
+            ))}
+          </ul>
+        </section>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="final-cta__panel">
+      <h2>함께 문제를 해결해볼까요?</h2>
+      <p class="final-cta__copy">연락처와 회사명을 남겨주시면 48시간 내에 연락드리고 대화를 나눠보실 수 있습니다.</p>
+      <a
+        id="cta-about-final-contact"
+        class="final-cta__button"
+        href="https://tally.so/r/nGYRaO"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="문제 해결 시작하기"
+        data-analytics-event="contact_click"
+        data-analytics-page="about"
+        data-analytics-location="final_cta"
+      >
+        문제 해결 시작하기
+      </a>
+    </div>
+  </section>
+</Layout>

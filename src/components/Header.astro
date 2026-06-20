@@ -1,0 +1,51 @@
+---
+import CTAButton from './CTAButton.astro';
+---
+
+<header class="sticky top-0 z-50 border-b border-ink/15 bg-paper/90 backdrop-blur">
+  <div class="container flex h-16 items-center justify-between">
+    <a href="/" class="brand-logo text-xl" aria-label="problem0 홈으로 이동">problem<span>0</span></a>
+    <nav class="hidden items-center gap-8 text-base font-extrabold md:flex" aria-label="주요 메뉴">
+      <a class="underline decoration-transparent decoration-2 underline-offset-4 transition hover:decoration-current" href="/about">소개</a>
+      <a class="underline decoration-transparent decoration-2 underline-offset-4 transition hover:decoration-current" href="/about#cases">케이스</a>
+      <a class="underline decoration-transparent decoration-2 underline-offset-4 transition hover:decoration-current" href="/blog">블로그</a>
+      <CTAButton
+        id="cta-global-nav-contact"
+        label="문의하기"
+        data-analytics-event="contact_click"
+        data-analytics-page="global"
+        data-analytics-location="nav"
+      />
+    </nav>
+    <button id="menu-toggle" class="inline-flex h-10 w-10 items-center justify-center rounded-[6px] border border-ink md:hidden" type="button" aria-label="모바일 메뉴 열기" aria-expanded="false">
+      <span class="h-0.5 w-5 bg-ink before:block before:h-0.5 before:w-5 before:-translate-y-2 before:bg-ink after:block after:h-0.5 after:w-5 after:translate-y-1.5 after:bg-ink"></span>
+    </button>
+  </div>
+  <nav id="mobile-menu" class="hidden border-t border-ink/15 bg-paper md:hidden" aria-label="모바일 메뉴">
+    <div class="container flex flex-col gap-4 py-5 text-lg font-extrabold">
+      <a href="/about">소개</a>
+      <a href="/about#cases">케이스</a>
+      <a href="/blog">블로그</a>
+      <a
+        id="cta-global-mobile-contact"
+        href="https://tally.so/r/nGYRaO"
+        target="_blank"
+        rel="noreferrer"
+        data-analytics-event="contact_click"
+        data-analytics-page="global"
+        data-analytics-location="mobile_nav"
+      >문의하기</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const menuButton = document.querySelector('#menu-toggle');
+  const mobileMenu = document.querySelector('#mobile-menu');
+
+  menuButton?.addEventListener('click', () => {
+    const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!isOpen));
+    mobileMenu?.classList.toggle('hidden');
+  });
+</script>

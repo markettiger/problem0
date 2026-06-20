@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F7F5EC"/>
+  <rect x="56" y="56" width="1088" height="518" rx="18" fill="#1E572D"/>
+  <circle cx="958" cy="154" r="78" fill="#E9E616"/>
+  <text x="96" y="176" font-family="system-ui, sans-serif" font-size="46" font-weight="800" fill="#E9E616">problem0</text>
+  <text x="96" y="330" font-family="system-ui, sans-serif" font-size="92" font-weight="900" fill="#FFFFFF">마케팅 문제를</text>
+  <text x="96" y="438" font-family="system-ui, sans-serif" font-size="92" font-weight="900" fill="#FFFFFF">0으로 만듭니다</text>
+</svg>

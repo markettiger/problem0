@@ -1,0 +1,20 @@
+---
+const {
+  href = 'https://tally.so/r/nGYRaO',
+  label = '문제해결 문의하기',
+  variant = 'dark',
+  external = true,
+  ...attrs
+} = Astro.props;
+
+const className = variant === 'hero'
+  ? 'inline-flex min-h-[60px] items-center justify-center bg-primary px-6 text-[clamp(1.05rem,1.45vw,1.35rem)] font-extrabold leading-none text-white transition hover:-translate-y-0.5 hover:bg-accent hover:text-black'
+  : variant === 'light'
+    ? 'inline-flex items-center justify-center rounded-[6px] border border-primary bg-paper px-5 py-3 text-sm font-extrabold text-primary transition hover:-translate-y-0.5 hover:bg-accent'
+    : 'inline-flex items-center justify-center rounded-[6px] border border-primary bg-primary px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-accent hover:text-black';
+---
+
+<a class={className} href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined} aria-label={label} {...attrs}>
+  {label}
+  <span aria-hidden="true" class="ml-3">↗</span>
+</a>
