@@ -37,6 +37,7 @@ const metaDescription = normalizeMetaText(description);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="naver-site-verification" content="7b8cb4e8a3e87391e86009c60b487a7c3937515f" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap.xml" />
     <link rel="canonical" href={canonical} />
@@ -94,6 +95,30 @@ const metaDescription = normalizeMetaText(description);
     <Footer />
     <script>
       function initializeProblem0Interactions() {
+        const scrollToLocationHash = () => {
+          const hash = window.location.hash;
+          if (!hash) return;
+
+          let target;
+
+          try {
+            target = document.querySelector(hash);
+          } catch {
+            return;
+          }
+
+          if (!target) return;
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              target.scrollIntoView({ block: 'start' });
+            });
+          });
+        };
+
+        scrollToLocationHash();
+        document.fonts?.ready.then(scrollToLocationHash);
+
         document.querySelectorAll('.faq-item').forEach((item) => {
           item.addEventListener('toggle', () => {
             const icon = item.querySelector('.faq-icon');

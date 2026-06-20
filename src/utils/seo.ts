@@ -1,9 +1,9 @@
 export const SITE_NAME = 'problem0';
 export const SITE_NAME_KO = '프로블럼제로';
 export const DEFAULT_SITE_URL = 'https://problem0.kr';
-export const DEFAULT_TITLE = 'problem0 | 마케팅 문제를 0으로 만듭니다';
+export const DEFAULT_TITLE = 'problem0 | 마케팅 문제를 0으로 만듭니다.';
 export const DEFAULT_DESCRIPTION =
-  '프로블럼제로는 스타트업의 복잡한 마케팅 문제를 진단하고 퍼포먼스, 콘텐츠, 그로스 관점에서 필요한 해결책을 실행합니다.';
+  '프로블럼제로는 스타트업의 복잡한 마케팅 문제를 진단하고 필요한 해결책을 실행합니다.';
 export const DEFAULT_OG_IMAGE = '/og.png';
 export const TALLY_URL = 'https://tally.so/r/nGYRaO';
 
