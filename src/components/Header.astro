@@ -7,7 +7,7 @@ import CTAButton from './CTAButton.astro';
     <a href="/" class="brand-logo text-xl" aria-label="problem0 홈으로 이동">problem<span>0</span></a>
     <nav class="hidden items-center gap-8 text-base font-extrabold md:flex" aria-label="주요 메뉴">
       <a class="underline decoration-transparent decoration-2 underline-offset-4 transition hover:decoration-current" href="/about">소개</a>
-      <a class="underline decoration-transparent decoration-2 underline-offset-4 transition hover:decoration-current" href="/about#cases">케이스</a>
+      <a class="underline decoration-transparent decoration-2 underline-offset-4 transition hover:decoration-current" href="/about#cases" data-astro-reload>케이스</a>
       <a class="underline decoration-transparent decoration-2 underline-offset-4 transition hover:decoration-current" href="/blog">블로그</a>
       <CTAButton
         id="cta-global-nav-contact"
@@ -24,7 +24,7 @@ import CTAButton from './CTAButton.astro';
   <nav id="mobile-menu" class="hidden border-t border-ink/15 bg-paper md:hidden" aria-label="모바일 메뉴">
     <div class="container flex flex-col gap-4 py-5 text-lg font-extrabold">
       <a href="/about">소개</a>
-      <a href="/about#cases">케이스</a>
+      <a href="/about#cases" data-astro-reload>케이스</a>
       <a href="/blog">블로그</a>
       <a
         id="cta-global-mobile-contact"
