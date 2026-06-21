@@ -6,15 +6,9 @@
 
 @font-face {
   font-family: 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2');
-  font-weight: 700;
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+  font-style: normal;
+  font-weight: 45 920;
   font-display: swap;
 }
 
@@ -2577,18 +2571,20 @@ a {
   }
 
   .fit-section__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 18px;
     margin-top: 28px;
   }
 
   .fit-card {
+    min-width: 0;
     min-height: 0;
     padding: 26px;
   }
 
   .fit-card h3 {
     font-size: clamp(1.15rem, 5.7vw, 1.55rem);
+    white-space: normal;
   }
 
   .fit-card li {
