@@ -2636,21 +2636,6 @@ a {
     letter-spacing: -0.035em;
   }
 
-  .prose-problem0 .link-preview-card {
-    grid-template-columns: 1fr;
-  }
-
-  .link-preview-card__image {
-    aspect-ratio: 16 / 9;
-    height: auto;
-    min-height: 0;
-    border-right: 0;
-    border-bottom: 1px solid #d7ddd2;
-  }
-
-  .link-preview-card__body {
-    padding: 20px;
-  }
 }
 
 .prose-problem0 {
@@ -2777,6 +2762,7 @@ a {
 .link-preview-card__image {
   display: block;
   overflow: hidden;
+  min-width: 0;
   height: 100%;
   min-height: 190px;
   border-right: 1px solid #d7ddd2;
@@ -2964,4 +2950,23 @@ a {
 
 .prose-problem0 code {
   font-size: 0.95em;
+}
+
+@media (max-width: 860px) {
+  .prose-problem0 .link-preview-card {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .prose-problem0 .link-preview-card__image {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid #d7ddd2;
+  }
+
+  .prose-problem0 .link-preview-card__body {
+    padding: 20px;
+  }
 }
