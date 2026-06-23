@@ -1,10 +1,9 @@
 export const SITE_NAME = 'problem0';
 export const SITE_NAME_KO = '프로블럼제로';
 export const DEFAULT_SITE_URL = 'https://problem0.kr';
-export const DEFAULT_TITLE = 'problem0 | 마케팅 문제를 0으로 만듭니다.';
-export const DEFAULT_DESCRIPTION =
-  '프로블럼제로는 스타트업의 복잡한 마케팅 문제를 진단하고 필요한 해결책을 실행합니다.';
-export const DEFAULT_OG_IMAGE = '/og.png';
+export const DEFAULT_TITLE = '프로블럼제로 | 마케팅 문제 해결 에이전시';
+export const DEFAULT_DESCRIPTION = '스타트업의 마케팅 문제를 0으로 만드세요.';
+export const DEFAULT_OG_IMAGE = '/og-20260623.png';
 export const TALLY_URL = 'https://tally.so/r/nGYRaO';
 
 export const EXPERTISE = ['퍼포먼스 마케팅', '그로스 마케팅', '콘텐츠 마케팅', 'B2B 인터뷰', '마케팅 문제 해결'];

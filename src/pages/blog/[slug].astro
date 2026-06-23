@@ -19,7 +19,7 @@ const encodedPostTitle = encodeURIComponent(post.data.title);
 const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedPostUrl}`;
 const threadsShareUrl = `https://www.threads.net/intent/post?text=${encodedPostTitle}%20${encodedPostUrl}`;
 const categoryListUrl = `/blog?category=${encodeURIComponent(post.data.category)}`;
-const postImage = post.data.thumbnail || '/og.png';
+const postImage = post.data.thumbnail || '/og-20260623.png';
 const postImageUrl = absoluteUrl(postImage, Astro.site);
 const publishedTime = post.data.pubDate.toISOString();
 const postDescription = normalizeMetaText(post.data.description);
