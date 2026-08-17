@@ -7,7 +7,7 @@ const posts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const categories = ['전체', '고객 사례', '마케팅 인사이트'];
+const categories = ['전체', '고객 사례', '마케팅 인사이트', '광고 소재 분석'];
 const blogDescription = '스타트업 마케팅 문제 해결을 위한 프로블럼제로의 콘텐츠 허브입니다.';
 const blogStructuredData = [
   buildBreadcrumbList(
@@ -108,10 +108,10 @@ const blogStructuredData = [
     </div>
 
     <div class="blog-list__grid">
-      {posts.map((post) => (
+      {posts.map((post, index) => (
         <a
           href={`/blog/${post.slug}`}
-          class="blog-card"
+          class:list={['blog-card', index === 0 && 'blog-card--latest']}
           data-category={post.data.category}
           data-search={post.data.title}
         >

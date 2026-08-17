@@ -2,7 +2,7 @@
 title: "패션 브랜드 3마 광고 소재 비교 분석"
 description: "2023년부터 2024년까지 패션 업계는 &lsquo;3마&rsquo;로 불리는 브랜드의 돌풍이 지속되었습니다. 마뗑킴, 마르디 메크르디, 마리떼 프랑소와 저버까지 마 씨 성을 가진 브랜드 세 곳 이 그 주인공인데요. 태생은 다르지만 2024년 각 브"
 pubDate: 2025-02-07
-category: "마케팅 인사이트"
+category: "광고 소재 분석"
 tags: ["마케팅 인사이트"]
 thumbnail: "/images/blog/fashion3maad/thumbnail.png"
 originalUrl: "https://getonthepodium.tistory.com/entry/fashion3maad"

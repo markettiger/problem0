@@ -6,7 +6,7 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.date(),
-    category: z.enum(['고객 사례', '마케팅 인사이트']).default('마케팅 인사이트'),
+    category: z.enum(['고객 사례', '마케팅 인사이트', '광고 소재 분석']).default('마케팅 인사이트'),
     tags: z.array(z.string()).default([]),
     thumbnail: z.string().default(''),
     originalUrl: z.string().default(''),

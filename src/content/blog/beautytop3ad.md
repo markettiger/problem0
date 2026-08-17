@@ -2,7 +2,7 @@
 title: "올리브영 랭킹 TOP3 브랜드 광고 소재 비교 분석"
 description: "뷰티 업계에서 올리브영의 플랫폼 파워가 압도적이라는 건 누구나 알고 있는 사실입니다. 그런 올리브영 랭킹 TOP3 안에 포진해 있는 브랜드가 직접 운영하고 있는 광고 소재, 무엇인지 궁금하지 않으신가요? 그래서 오늘 기준 올리브영 랭킹 1, 2, 3위"
 pubDate: 2025-11-25
-category: "마케팅 인사이트"
+category: "광고 소재 분석"
 tags: ["마케팅 인사이트"]
 thumbnail: "/images/blog/beautytop3ad/thumbnail.png"
 originalUrl: "https://getonthepodium.tistory.com/entry/beautytop3ad"
