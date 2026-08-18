@@ -138,21 +138,43 @@ const metaDescription = normalizeMetaText(description);
         }
 
         const categoryButtons = document.querySelectorAll('.blog-list__category');
-        const blogCards = document.querySelectorAll('.blog-card');
+        const categoryViewAllButtons = document.querySelectorAll('[data-view-category]');
         const blogSearchInput = document.querySelector('#blog-search');
-        const blogEmpty = document.querySelector('.blog-list__empty');
+        const blogDefaultView = document.querySelector('[data-blog-default-view]');
+        const blogArchiveView = document.querySelector('[data-blog-archive-view]');
+        const blogArchiveTitle = document.querySelector('[data-blog-archive-title]');
+        const blogArchiveCards = document.querySelectorAll('[data-archive-card]');
+        const blogArchiveEmpty = document.querySelector('[data-blog-archive-empty]');
 
-        const applyBlogFilters = (selectedCategory = '전체', searchQuery = '') => {
+        const showBlogDefault = () => {
+          blogDefaultView?.removeAttribute('hidden');
+          blogArchiveView?.setAttribute('hidden', '');
+
+          categoryButtons.forEach((item) => {
+            item.setAttribute('aria-pressed', String(item.getAttribute('data-category') === '전체'));
+          });
+        };
+
+        const showBlogArchive = (selectedCategory = '전체', searchQuery = '') => {
           const availableCategories = Array.from(categoryButtons).map((button) => button.getAttribute('data-category'));
           const normalizedCategory = availableCategories.includes(selectedCategory) ? selectedCategory : '전체';
           const normalizedQuery = searchQuery.trim().toLocaleLowerCase('ko-KR');
           let visibleCount = 0;
 
+          blogDefaultView?.setAttribute('hidden', '');
+          blogArchiveView?.removeAttribute('hidden');
+
+          if (blogArchiveTitle) {
+            blogArchiveTitle.textContent = normalizedQuery
+              ? normalizedCategory === '전체' ? '검색 결과' : `${normalizedCategory} 검색 결과`
+              : normalizedCategory === '전체' ? '전체 콘텐츠' : normalizedCategory;
+          }
+
           categoryButtons.forEach((item) => {
             item.setAttribute('aria-pressed', String(item.getAttribute('data-category') === normalizedCategory));
           });
 
-          blogCards.forEach((card) => {
+          blogArchiveCards.forEach((card) => {
             const matchesCategory = normalizedCategory === '전체' || card.getAttribute('data-category') === normalizedCategory;
             const searchSource = (card.getAttribute('data-search') || '').toLocaleLowerCase('ko-KR');
             const matchesSearch = !normalizedQuery || searchSource.includes(normalizedQuery);
@@ -162,12 +184,12 @@ const metaDescription = normalizeMetaText(description);
             card.toggleAttribute('hidden', !shouldShow);
           });
 
-          if (blogEmpty) {
-            blogEmpty.toggleAttribute('hidden', visibleCount > 0);
+          if (blogArchiveEmpty) {
+            blogArchiveEmpty.toggleAttribute('hidden', visibleCount > 0);
           }
         };
 
-        if (categoryButtons.length && blogCards.length) {
+        if (categoryButtons.length && blogArchiveCards.length) {
           const urlParams = new URLSearchParams(window.location.search);
           const urlCategory = urlParams.get('category') || '전체';
           const urlQuery = urlParams.get('q') || '';
@@ -176,7 +198,11 @@ const metaDescription = normalizeMetaText(description);
             blogSearchInput.value = urlQuery;
           }
 
-          applyBlogFilters(urlCategory, urlQuery);
+          if (urlCategory === '전체' && !urlQuery) {
+            showBlogDefault();
+          } else {
+            showBlogArchive(urlCategory, urlQuery);
+          }
         }
 
         categoryButtons.forEach((button) => {
@@ -194,11 +220,33 @@ const metaDescription = normalizeMetaText(description);
             }
 
             window.history.replaceState({}, '', nextUrl);
-            applyBlogFilters(selectedCategory, blogSearchInput?.value || '');
+
+            if (selectedCategory === '전체' && !(blogSearchInput?.value || '').trim()) {
+              showBlogDefault();
+            } else {
+              showBlogArchive(selectedCategory, blogSearchInput?.value || '');
+            }
           });
         });
 
-        if (blogSearchInput && blogCards.length && blogSearchInput.dataset.searchReady !== 'true') {
+        categoryViewAllButtons.forEach((button) => {
+          if (button.dataset.viewReady === 'true') return;
+          button.dataset.viewReady = 'true';
+
+          button.addEventListener('click', () => {
+            const selectedCategory = button.getAttribute('data-view-category') || '전체';
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set('category', selectedCategory);
+            nextUrl.searchParams.delete('q');
+            window.history.replaceState({}, '', nextUrl);
+
+            if (blogSearchInput) blogSearchInput.value = '';
+            showBlogArchive(selectedCategory);
+            blogArchiveView?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+          });
+        });
+
+        if (blogSearchInput && blogArchiveCards.length && blogSearchInput.dataset.searchReady !== 'true') {
           blogSearchInput.dataset.searchReady = 'true';
 
           blogSearchInput.addEventListener('input', () => {
@@ -214,7 +262,11 @@ const metaDescription = normalizeMetaText(description);
             }
 
             window.history.replaceState({}, '', nextUrl);
-            applyBlogFilters(selectedCategory, blogSearchInput.value);
+            if (!searchQuery && selectedCategory === '전체') {
+              showBlogDefault();
+            } else {
+              showBlogArchive(selectedCategory, blogSearchInput.value);
+            }
           });
         }
 

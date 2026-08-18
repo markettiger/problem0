@@ -1,0 +1,23 @@
+---
+const { post, latest = false, compact = false, archive = false } = Astro.props;
+---
+
+<a
+  href={`/blog/${post.slug}/`}
+  class:list={['blog-card', latest && 'blog-card--latest', compact && 'blog-card--compact']}
+  data-category={post.data.category}
+  data-search={post.data.title}
+  data-archive-card={archive ? '' : undefined}
+>
+  <div class:list={['blog-card__thumbnail', post.data.thumbnail && 'blog-card__thumbnail--image', post.data.category === '고객 사례' ? 'blog-card__thumbnail--case' : 'blog-card__thumbnail--insight']}>
+    {post.data.thumbnail && <img src={post.data.thumbnail} alt="" loading="lazy" decoding="async" />}
+  </div>
+  <div class="blog-card__body">
+    <p class="blog-card__meta">
+      <span>{post.data.category}</span>
+      <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString('ko-KR')}</time>
+    </p>
+    <h3>{post.data.title}</h3>
+    <p class="blog-card__description">{post.data.description}</p>
+  </div>
+</a>

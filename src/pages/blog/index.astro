@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
 import { absoluteUrl, buildBreadcrumbList } from '../../utils/seo';
 
 const posts = (await getCollection('blog'))
@@ -8,6 +9,7 @@ const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const categories = ['전체', '고객 사례', '마케팅 인사이트', '광고 소재 분석'];
+const previewCategories = categories.slice(1);
 const blogDescription = '스타트업 마케팅 문제 해결을 위한 프로블럼제로의 콘텐츠 허브입니다.';
 const blogStructuredData = [
   buildBreadcrumbList(
@@ -55,7 +57,7 @@ const blogStructuredData = [
         <nav class="kulin-hero__links" aria-label="블로그 주요 메뉴">
           <a href="/about">소개</a>
           <a href="/about#cases" data-astro-reload>케이스</a>
-          <a href="/blog">블로그</a>
+          <a href="/blog/">블로그</a>
           <a
             id="cta-blog-nav-contact"
             class="kulin-hero__cta"
@@ -75,7 +77,7 @@ const blogStructuredData = [
       <nav id="home-mobile-menu" class="kulin-hero__mobile-menu" aria-label="블로그 모바일 메뉴">
         <a href="/about">소개</a>
         <a href="/about#cases" data-astro-reload>케이스</a>
-        <a href="/blog">블로그</a>
+        <a href="/blog/">블로그</a>
         <a
           id="cta-blog-mobile-contact"
           href="https://tally.so/r/nGYRaO"
@@ -107,28 +109,39 @@ const blogStructuredData = [
       </div>
     </div>
 
-    <div class="blog-list__grid">
-      {posts.map((post, index) => (
-        <a
-          href={`/blog/${post.slug}`}
-          class:list={['blog-card', index === 0 && 'blog-card--latest']}
-          data-category={post.data.category}
-          data-search={post.data.title}
-        >
-          <div class:list={['blog-card__thumbnail', post.data.thumbnail && 'blog-card__thumbnail--image', post.data.category === '고객 사례' ? 'blog-card__thumbnail--case' : 'blog-card__thumbnail--insight']}>
-            {post.data.thumbnail && <img src={post.data.thumbnail} alt="" loading="lazy" decoding="async" />}
+    <div data-blog-default-view>
+      <section class="blog-content-section blog-content-section--latest" aria-labelledby="latest-content-title">
+        <div class="blog-content-section__head">
+          <h3 id="latest-content-title">최신 콘텐츠</h3>
+        </div>
+        <div class="blog-list__grid">
+          {posts.slice(0, 3).map((post, index) => <BlogCard post={post} latest={index === 0} />)}
+        </div>
+      </section>
+
+      {previewCategories.map((category) => (
+        <section class="blog-content-section blog-category-preview" aria-labelledby={`category-${category}`}>
+          <div class="blog-content-section__head">
+            <h3 id={`category-${category}`}>{category}</h3>
+            <button class="blog-category-view-all" type="button" data-view-category={category}>
+              모두보기 <span aria-hidden="true">›</span>
+            </button>
           </div>
-          <div class="blog-card__body">
-            <p class="blog-card__meta">
-              <span>{post.data.category}</span>
-              <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString('ko-KR')}</time>
-            </p>
-            <h3>{post.data.title}</h3>
-            <p class="blog-card__description">{post.data.description}</p>
+          <div class="blog-category-preview__grid">
+            {posts.filter((post) => post.data.category === category).slice(0, 4).map((post, index) => <BlogCard post={post} compact={true} latest={index === 0} />)}
           </div>
-        </a>
+        </section>
       ))}
     </div>
-    <p class="blog-list__empty" hidden>검색 결과가 없습니다.</p>
+
+    <section class="blog-archive-view" data-blog-archive-view hidden aria-live="polite">
+      <div class="blog-content-section__head blog-archive-view__head">
+        <h3 data-blog-archive-title>전체 콘텐츠</h3>
+      </div>
+      <div class="blog-list__grid">
+        {posts.map((post) => <BlogCard post={post} archive={true} />)}
+      </div>
+      <p class="blog-list__empty" data-blog-archive-empty hidden>검색 결과가 없습니다.</p>
+    </section>
   </section>
 </Layout>

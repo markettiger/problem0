@@ -18,7 +18,7 @@ const encodedPostUrl = encodeURIComponent(postUrl);
 const encodedPostTitle = encodeURIComponent(post.data.title);
 const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedPostUrl}`;
 const threadsShareUrl = `https://www.threads.net/intent/post?text=${encodedPostTitle}%20${encodedPostUrl}`;
-const categoryListUrl = `/blog?category=${encodeURIComponent(post.data.category)}`;
+const categoryListUrl = `/blog/?category=${encodeURIComponent(post.data.category)}`;
 const postImage = post.data.thumbnail || '/og-20260623.png';
 const postImageUrl = absoluteUrl(postImage, Astro.site);
 const publishedTime = post.data.pubDate.toISOString();
@@ -79,7 +79,7 @@ const blogPostStructuredData = [
         <nav class="kulin-hero__links" aria-label="블로그 글 주요 메뉴">
           <a href="/about">소개</a>
           <a href="/about#cases" data-astro-reload>케이스</a>
-          <a href="/blog">블로그</a>
+          <a href="/blog/">블로그</a>
           <a
             id="cta-blog-post-nav-contact"
             class="kulin-hero__cta"
@@ -100,7 +100,7 @@ const blogPostStructuredData = [
       <nav id="home-mobile-menu" class="kulin-hero__mobile-menu" aria-label="블로그 글 모바일 메뉴">
         <a href="/about">소개</a>
         <a href="/about#cases" data-astro-reload>케이스</a>
-        <a href="/blog">블로그</a>
+        <a href="/blog/">블로그</a>
         <a
           id="cta-blog-post-mobile-contact"
           href="https://tally.so/r/nGYRaO"
