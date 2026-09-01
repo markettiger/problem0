@@ -739,6 +739,7 @@ a {
 .blog-card {
   display: grid;
   gap: 18px;
+  align-content: start;
   color: #000;
   transition: transform 180ms ease;
 }
@@ -850,6 +851,7 @@ a {
 .blog-card__body {
   display: grid;
   gap: 10px;
+  align-content: start;
 }
 
 .blog-card__meta {
@@ -888,6 +890,12 @@ a {
   letter-spacing: -0.018em;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+@media (min-width: 861px) {
+  .blog-card__meta {
+    min-height: 1.3em;
+  }
 }
 
 .blog-card__tags {
