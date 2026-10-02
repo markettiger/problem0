@@ -5,3 +5,6 @@ publish = "dist"
 [build.environment]
 NODE_VERSION = "20"
 ASTRO_TELEMETRY_DISABLED = "1"
+
+[[plugins]]
+package = "./netlify-plugins/indexnow"
